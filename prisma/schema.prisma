@@ -19,7 +19,7 @@ model ValidOperation {
 
   from          String
   to            String
-  amount        Int
+  amount        Decimal
   suspected     Boolean
 }
 

@@ -1,0 +1,54 @@
+version: '3.1'
+
+services:
+  mevo-db:
+    image: mysql:8
+    restart: always
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - mevo_db_data:/var/lib/mysql
+    networks:
+      - mevo-network
+
+  mevo-app:
+    build: .
+    container_name: mevo-app
+    command: sh -c "npx prisma generate && npm run start:dev"
+    environment:
+      - DATABASE_URL=$DATABASE_URL
+    volumes:
+      - .:/mevo-app
+      - /mevo-app/node_modules
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    networks:
+      - mevo-network
+    depends_on:
+      - mevo-db
+
+  mevo-prisma-studio:
+    image: node:18
+    container_name: mevo-prisma-studio
+    working_dir: /mevo-app
+    command: sh -c "npm install && npx prisma studio"
+    volumes:
+      - .:/mevo-app
+      - /mevo-app/node_modules
+    ports:
+      - "5555:5555"
+    depends_on:
+      - mevo-db
+      - mevo-app
+    networks:
+      - mevo-network
+
+volumes:
+  mevo_db_data:
+
+networks:
+  mevo-network:
