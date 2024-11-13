@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /mevo-app
+WORKDIR /app
 
 COPY package*.json ./
 
@@ -10,7 +10,7 @@ RUN npm install -g nodemon
 
 COPY . .
 
-RUN npx prisma generate
+RUN npx prisma generate --schema=./src/infrastructure/database/prisma/schema.prisma
 
 EXPOSE 3000
 
