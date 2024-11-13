@@ -1,4 +1,3 @@
-// src/infrastructure/database/prisma/operation.prisma.repository.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { Operation } from 'src/domain/models/operation.model';
