@@ -16,9 +16,12 @@ export function IsMimeType(
       constraints: mimeTypes,
       options: validationOptions,
       validator: {
-        validate(value: Express.Multer.File, args: ValidationArguments) {
-          const [allowedMimeTypes] = args.constraints;
-          return allowedMimeTypes.includes(value.mimetype);
+        validate(value: any, args: ValidationArguments) {
+          if (value && value.mimetype) {
+            const [allowedMimeTypes] = args.constraints;
+            return allowedMimeTypes.includes(value.mimetype);
+          }
+          return true;
         },
         defaultMessage(args: ValidationArguments) {
           const [allowedMimeTypes] = args.constraints;

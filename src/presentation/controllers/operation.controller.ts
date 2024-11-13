@@ -22,6 +22,12 @@ export class OperationController {
   async uploadOperations(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
+    if (!file) {
+      throw new BadRequestException(
+        'Arquivo inválido ou ausente. Deve ser um arquivo CSV.',
+      );
+    }
+
     const uploadOperationDto = plainToInstance(UploadOperationDto, { file });
     const errors = await validate(uploadOperationDto);
 
