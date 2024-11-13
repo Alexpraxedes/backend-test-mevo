@@ -16,9 +16,12 @@ export class UploadOperationsCommand {
   async execute(file: Express.Multer.File): Promise<any> {
     const processFile = file.buffer.toString();
     const headerFile = processFile.split('\n', 1)[0];
-
+    console.log(headerFile);
     if (headerFile.trim() !== 'from;to;amount') {
-      return { message: 'Arquivo com formato inválido de dados!' };
+      return {
+        status: 'error',
+        message: 'Arquivo com formato inválido de dados!',
+      };
     }
 
     const parsedData = await this.parseCSV(file.buffer);
