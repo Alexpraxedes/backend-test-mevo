@@ -14,8 +14,8 @@ datasource db {
 }
 
 model ValidOperation {
-  id            Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
 
   from          String
   to            String
@@ -31,4 +31,14 @@ model InvalidOperation {
   negativeCount     Int
   duplicateCount    Int
   supectedsCount    Int
+}
+
+model User {
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  username    String      @unique
+  password    String
+  email       String      @unique
 }
